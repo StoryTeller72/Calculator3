@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ActionButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/btn_rounded_action</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/buttonText</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="NumberButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/btn_rounded_corners_nums</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/buttonText</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="ConsoleText">
+        <item name="android:textSize">57sp</item>
+        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="android:textColor">@color/consoleText</item>
+    </style>
+</resources>
