@@ -42,6 +42,7 @@
         android:background="@color/grey"/>
     
     <ImageView
+        android:id="@+id/main_btn_backspace"
         app:layout_constraintBottom_toTopOf="@id/main_line"
         android:layout_width="24dp"
         android:layout_height="18dp"
@@ -153,7 +154,7 @@
         android:text="±"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/main_btn_mod"
+        android:id="@+id/main_btn_percent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="@id/Row1"
