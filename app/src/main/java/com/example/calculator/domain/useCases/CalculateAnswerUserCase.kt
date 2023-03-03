@@ -1,6 +1,7 @@
 package com.example.calculator.domain.useCases
 
 import java.util.Stack
+import kotlin.math.floor
 
 class CalculateAnswerUserCase {
 
@@ -73,7 +74,7 @@ class CalculateAnswerUserCase {
                 }
                 val a = stack.pop()
                 val b = stack.pop()
-                val answer = when(symbol){
+                val tempAnswer = when(symbol){
                     "+" -> a + b
                     "-" -> b - a
                     "*" -> a * b
@@ -82,9 +83,16 @@ class CalculateAnswerUserCase {
                         b / a
                     }
                 }
-                stack.push(answer)
+                stack.push(tempAnswer)
             }
         }
-        return stack.pop().toString().replace(".",",")
+        val answer = stack.pop()
+        val answerString: String =
+        if (floor(answer) == answer){
+            answer.toInt().toString()
+        }else{
+            answer.toString().replace(".",",")
+        }
+        return answerString
     }
 }
