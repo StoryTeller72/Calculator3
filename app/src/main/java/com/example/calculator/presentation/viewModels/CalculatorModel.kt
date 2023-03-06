@@ -15,6 +15,8 @@ class CalculatorModel(
     val equation: LiveData<String>
         get() = _equation
 
+    private var hasOperation = false
+
 
 
     init {
@@ -22,8 +24,10 @@ class CalculatorModel(
     }
 
     fun addNumberLetter(symbol: Char){
-        if( _equation.value?.isNotEmpty() == true && _equation.value?.last() == '%'){
+        if( _equation.value?.isNotEmpty() == true &&
+            (_equation.value?.last() == '%' || _equation.value?.last() == ')')){
             _equation.value +="*"
+            hasOperation = true
         }
         _equation.value += symbol
     }
@@ -34,11 +38,12 @@ class CalculatorModel(
                 _equation.value = _equation.value!!.dropLast(1)
             }
             _equation.value += oper
+            hasOperation = true
         }
     }
 
     fun addPoint(){
-        if(_equation.value?.isNotEmpty() == true)
+        if(_equation.value?.isNotEmpty() == true &&_equation.value!!.last().isDigit() )
             _equation.value += ','
     }
 
@@ -63,8 +68,11 @@ class CalculatorModel(
     }
 
     fun calculate(){
-        if (_equation.value?.isNotEmpty() == true){
+        if (_equation.value?.isNotEmpty() == true &&
+            (_equation.value!!.last().isDigit() || _equation.value!!.last() == ')' || _equation.value!!.last() == '%')
+            && hasOperation){
             _equation.value = calculateAnswerUserCase.execute(_equation.value!!)
+            hasOperation = false
         }
     }
 

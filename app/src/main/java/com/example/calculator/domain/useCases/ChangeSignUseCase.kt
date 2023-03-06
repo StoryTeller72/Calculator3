@@ -23,6 +23,9 @@ class ChangeSignUseCase {
             temp = string.takeLast(amntToDrop).dropLast(1)
         }
         else {
+            if(string.first() == '-'){
+                return string.drop(1)
+            }
             while (index >= 0 && (string[index].isDigit() || string[index] == ',')) {
                 index--
                 amntToDrop++

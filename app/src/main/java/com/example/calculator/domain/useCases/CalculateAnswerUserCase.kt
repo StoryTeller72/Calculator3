@@ -11,7 +11,7 @@ class CalculateAnswerUserCase {
         return calculateEquation(postfixEquation)
     }
 
-    fun stringToListArray(string: String): ArrayList<String>{
+    private fun stringToListArray(string: String): ArrayList<String>{
         var i = 0
         val arrayList = arrayListOf<String>()
         var temp =""
@@ -28,9 +28,17 @@ class CalculateAnswerUserCase {
                 }
                 '%' -> arrayList.add(string[i].toString())
                 else ->{
-                    arrayList.add(temp)
-                    temp = ""
-                    arrayList.add(string[i].toString())
+                    if(i == 0 && string[i] == '-'){
+                        temp += "-"
+                        while (string[i + 1].isDigit()){
+                            temp += string[i + 1]
+                            i++
+                        }
+                    }else {
+                        arrayList.add(temp)
+                        temp = ""
+                        arrayList.add(string[i].toString())
+                    }
                 }
             }
             i++
@@ -40,7 +48,7 @@ class CalculateAnswerUserCase {
         return arrayList
     }
 
-    fun convertPostfixNotation(arrayList: ArrayList<String>): ArrayList<String>{
+    private fun convertPostfixNotation(arrayList: ArrayList<String>): ArrayList<String>{
         val priorityOper = hashMapOf("+" to 1, "-" to 1, "*" to 2, "/" to 2, "%" to 3)
         val answer = arrayListOf<String>()
         val operationStack: Stack<String> = Stack()
@@ -61,7 +69,7 @@ class CalculateAnswerUserCase {
         return answer
     }
 
-    fun calculateEquation(equation: ArrayList<String>): String{
+    private fun calculateEquation(equation: ArrayList<String>): String{
         val stack: Stack<Double> = Stack()
         for (symbol in equation){
             if (symbol.toDoubleOrNull() != null) stack.push(symbol.toDouble())
@@ -79,7 +87,7 @@ class CalculateAnswerUserCase {
                     "-" -> b - a
                     "*" -> a * b
                     else ->{
-                        if(a==0.0) return "ERROR"
+                        if(a == 0.0) return "ERROR"
                         b / a
                     }
                 }
