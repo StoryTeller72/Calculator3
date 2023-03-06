@@ -1,5 +1,6 @@
 package com.example.calculator.domain.useCases
 
+import android.util.Log
 import java.util.Stack
 import kotlin.math.floor
 
@@ -12,32 +13,33 @@ class CalculateAnswerUserCase {
     }
 
     private fun stringToListArray(string: String): ArrayList<String>{
+        val equation = string.replace(',', '.')
         var i = 0
         val arrayList = arrayListOf<String>()
         var temp =""
-        while (i < string.length){
+        while (i < equation.length){
             when(string[i]){
-                in '0'..'9' -> temp += string[i]
+                in '0'..'9' -> temp += equation[i]
                 ',' -> temp += '.'
                 '(' ->{
                     i++
-                    while (string[i] != ')'){
-                        temp += string[i]
+                    while (equation[i] != ')'){
+                        temp += equation[i]
                         i++
                     }
                 }
-                '%' -> arrayList.add(string[i].toString())
+                '%' -> arrayList.add(equation[i].toString())
                 else ->{
-                    if(i == 0 && string[i] == '-'){
+                    if(i == 0 && equation[i] == '-'){
                         temp += "-"
-                        while (string[i + 1].isDigit()){
-                            temp += string[i + 1]
+                        while (equation[i + 1].isDigit()){
+                            temp += equation[i + 1]
                             i++
                         }
                     }else {
                         arrayList.add(temp)
                         temp = ""
-                        arrayList.add(string[i].toString())
+                        arrayList.add(equation[i].toString())
                     }
                 }
             }
@@ -93,6 +95,7 @@ class CalculateAnswerUserCase {
                 }
                 stack.push(tempAnswer)
             }
+            Log.d("testMinus", stack.toString())
         }
         val answer = stack.pop()
         val answerString: String =
