@@ -2,100 +2,82 @@ package com.example.calculator.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.calculator.databinding.ActivityMainBinding
-import com.example.calculator.presentation.viewModels.CalculatorModel
-import com.example.calculator.presentation.viewModels.CalculatorModelFactory
+import com.example.calculator.presentation.viewModels.CalculatorViewModel
+import com.example.calculator.presentation.viewModels.CalculatorViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: CalculatorModel
-    private lateinit var binding: ActivityMainBinding
+    private val calculatorViewModel: CalculatorViewModel by viewModels {
+        CalculatorViewModelFactory(this)
+    }
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, CalculatorModelFactory(this))
-            .get(CalculatorModel::class.java)
+        val numberButtons = listOf(
+            binding.mainButtonZero,
+            binding.mainButtonOne,
+            binding.mainButtonTwo,
+            binding.mainButtonThree,
+            binding.mainButtonFour,
+            binding.mainButtonFive,
+            binding.mainButtonSix,
+            binding.mainButtonSeven,
+            binding.mainButtonEight,
+            binding.mainButtonNine
+        )
 
-        viewModel.equation.observe(this, Observer {
+        numberButtons.forEachIndexed { index, button ->
+            button.setOnClickListener{
+                calculatorViewModel.addNumberLetter(index)
+            }
+        }
+
+
+        calculatorViewModel.equation.observe(this, Observer {
             binding.mainTvOutput.text = it
         })
 
-        binding.mainBtn1.setOnClickListener {
-            viewModel.addNumberLetter('1')
-        }
-        binding.mainBtn2.setOnClickListener {
-           viewModel.addNumberLetter('2')
-        }
-        binding.mainBtn3.setOnClickListener {
-            viewModel.addNumberLetter('3')
-        }
-        binding.mainBtn4.setOnClickListener {
-            viewModel.addNumberLetter('4')
-        }
-        binding.mainBtn5.setOnClickListener {
-            viewModel.addNumberLetter('5')
-        }
-        binding.mainBtn6.setOnClickListener {
-            viewModel.addNumberLetter('6')
-        }
-        binding.mainBtn7.setOnClickListener {
-            viewModel.addNumberLetter('7')
-        }
-        binding.mainBtn8.setOnClickListener {
-            viewModel.addNumberLetter('8')
-        }
-        binding.mainBtn9.setOnClickListener {
-            viewModel.addNumberLetter('9')
-        }
-        binding.mainBtnZero.setOnClickListener {
-            viewModel.addNumberLetter('0')
+        val operationsButtons = mapOf(
+            binding.mainButtonPercent to '%',
+            binding.mainButtonPlus to '+',
+            binding.mainButtonMinus to '-',
+            binding.mainButtonMultiplication to '*',
+            binding.mainButtonDivision to '/'
+        )
+
+        operationsButtons.forEach { (button, operationSymbol) ->
+            button.setOnClickListener {
+                calculatorViewModel.addOperationSymbol(operationSymbol)
+            }
         }
 
-        binding.mainBtnPlus.setOnClickListener {
-           viewModel.addOperationSymbol('+')
+        binding.mainButtonPoint.setOnClickListener {
+           calculatorViewModel.addPoint()
         }
 
-        binding.mainBtnMinus.setOnClickListener {
-            viewModel.addOperationSymbol('-')
-        }
-
-        binding.mainBtnPercent.setOnClickListener {
-            viewModel.addOperationSymbol('%')
-        }
-
-        binding.mainBtnMult.setOnClickListener {
-            viewModel.addOperationSymbol('*')
-        }
-
-
-        binding.mainBtnDiv.setOnClickListener {
-            viewModel.addOperationSymbol('/')
-        }
-
-        binding.mainBtnPoint.setOnClickListener {
-           viewModel.addPoint()
-        }
-
-        binding.mainBtnAC.setOnClickListener {
-           viewModel.clearOutput()
+        binding.mainButtonAC.setOnClickListener {
+           calculatorViewModel.clearOutput()
         }
 
         binding.mainBtnBackspace.setOnClickListener {
-          viewModel.clearLastSymbol()
+          calculatorViewModel.clearLastSymbol()
         }
 
-        binding.mainBtnSign.setOnClickListener {
-            viewModel.changeSign()
+        binding.mainButtonSign.setOnClickListener {
+            calculatorViewModel.changeSign()
         }
 
 
-        binding.mainBtnEqual.setOnClickListener {
-           viewModel.calculate()
+        binding.mainButtonEqual.setOnClickListener {
+           calculatorViewModel.calculate()
         }
     }
 
